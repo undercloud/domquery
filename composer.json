@@ -1,0 +1,24 @@
+{
+  "name": "undercloud/domquery",
+  "description": "DomQuery - HTML Document Reader",
+  "keywords": [
+    "php","dom","query",
+    "jquery","parser","html"
+  ],
+  "homepage": "https://github.com/undercloud/domquery",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "undercloud",
+      "email": "lodashes@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+   "autoload": {
+      "psr-4": {
+         "Undercloud\\Misc\\": "src/Undercloud/Misc/"
+      }
+   }
+}
