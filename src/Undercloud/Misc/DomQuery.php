@@ -118,6 +118,7 @@ class DomQuery
     public static function load($html)
     {
         $document = new DomDocument;
+        //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
         if (false === @$document->loadHTML($html, LIBXML_NOBLANKS)) {
             throw new Exception('Cannot parse HTML');
         }
