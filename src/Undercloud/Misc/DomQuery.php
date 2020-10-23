@@ -203,7 +203,9 @@ class DomQuery
     public function tagName()
     {
         return $this->nullOr(0, function (DOMNode $node) {
-            return $node->tagName;
+        	if (property_exists($node, 'tagName')) {
+            	return $node->tagName;
+        	}
         });
     }
 
