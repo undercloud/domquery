@@ -11,6 +11,7 @@ namespace Undercloud\Misc;
  */
 
 use Closure;
+use DOMNode;
 use DOMXpath;
 use DOMElement;
 use DOMNodeList;
@@ -77,7 +78,7 @@ class DomQuery
         $value = $this->searchNextDomElement($key, $value);
 
         if (null === $value) {
-            return;
+            $value = new DomDocument;
         }
 
         if (null !== $closure) {
@@ -201,7 +202,7 @@ class DomQuery
      */
     public function tagName()
     {
-        return $this->nullOr(0, function ($node) {
+        return $this->nullOr(0, function (DOMNode $node) {
             return $node->tagName;
         });
     }
@@ -215,8 +216,12 @@ class DomQuery
      */
     public function hasAttr($name)
     {
-        return $this->nullOr(0, function ($node) use ($name) {
-            return $node->hasAttribute($name);
+        return $this->nullOr(0, function (DOMNode $node) use ($name) {
+        	if (method_exists($node, 'getAttribute')) {
+            	return $node->hasAttribute($name);
+            }
+
+            return false;
         });
     }
 
@@ -229,8 +234,10 @@ class DomQuery
      */
     public function attr($name)
     {
-        return $this->nullOr(0, function ($node) use ($name) {
-            return $node->getAttribute($name);
+        return $this->nullOr(0, function (DOMNode $node) use ($name) {
+            if (method_exists($node, 'getAttribute')) {
+            	return $node->getAttribute($name);
+            }
         });
     }
 
@@ -241,8 +248,14 @@ class DomQuery
      */
     public function html()
     {
-        return $this->nullOr(0, function ($node) {
-            return $node->ownerDocument->saveHTML($node);
+        return $this->nullOr(0, function (DOMNode $node) {
+        	if ($node instanceof DOMElement) {
+            	return $node->ownerDocument->saveHTML($node);
+            }
+
+            if ($node instanceof DomDocument) {
+            	return $node->saveHTML();
+            }
         });
     }
 
@@ -253,7 +266,7 @@ class DomQuery
      */
     public function text()
     {
-        return $this->nullOr(0, function ($node) {
+        return $this->nullOr(0, function (DOMNode $node) {
             return $node->textContent;
         });
     }
