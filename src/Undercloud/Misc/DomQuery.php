@@ -168,7 +168,7 @@ class DomQuery
      */
     public function findByClass($class)
     {
-    	return $this->find(".//*[contains(@class,'{$class}')]");
+    	return $this->find(".//*[contains(concat(' ', @class, ' '),' {$class} ')]");
     }
 
     /**
